@@ -12,13 +12,13 @@
         "productId":"100001",
         "productName":"小米6",
         "productPrice":2499,
-        "productImage":"../static/2.jpg"
+        "productImage":"2.jpg‘"
     },
     {
         "productId":"100001",
         "productName":"小米6",
         "productPrice":2499,
-        "productImage":"../static/3.jpg"
+        "productImage":"3.jpg"
     }
    ]
 }
