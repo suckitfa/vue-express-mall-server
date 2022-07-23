@@ -6,19 +6,19 @@
         "productId":"100001",
         "productName":"影响",
         "productPrice":1999,
-        "productImage":"1.jpg"
+        "productImage":"/static/1.jpg"
     },
     {
-        "productId":"100001",
+        "productId":"100002",
         "productName":"小米6",
         "productPrice":2499,
-        "productImage":"2.jpg‘"
+        "productImage":"/static/2.jpg"
     },
     {
-        "productId":"100001",
+        "productId":"100003",
         "productName":"小米6",
         "productPrice":2499,
-        "productImage":"3.jpg"
+        "productImage":"/static/3.jpg"
     }
    ]
 }
