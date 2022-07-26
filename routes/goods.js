@@ -3,7 +3,7 @@ var router = express.Router();
 var mongoose = require('mongoose')
 var Goods = require('../models/goods')
 // 链接mongoDB
-mongoose.connect('mongodb://127.0.0.1:27017')
+mongoose.connect('mongodb://127.0.0.1:27017/mall')
 mongoose.connection.on('connected',() => console.log("链接成功"))
 mongoose.connection.on('error',() => console.log("链接错误"))
 mongoose.connection.on('disconnected',() => console.log("链接断开"))
@@ -15,9 +15,9 @@ router.get('/', function(req, res, next) {
     let sort = req.param("sort")
     let skip = (page - 1) * pageSize; // 分页计算公式
     // console.log(`page = ${page}, pageSize = ${pageSize},sort = ${sort}`)
-    var params = {}
-    var goodsModel = Goods.find(params).skip(skip).limit(pageSize);
-    goodsModel.sort({'salePrice':sort});
+    // var params = {}
+    // var goodsModel = Goods.find(params).skip(skip).limit(pageSize);
+    // goodsModel.sort({'salePrice':sort});
     // goodsModel.exec({},(err,doc) => {
     //     if (err) {
     //     } else {
