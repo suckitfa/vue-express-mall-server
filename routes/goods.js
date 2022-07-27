@@ -58,4 +58,39 @@ router.get('/', function(req, res, next) {
      });
 });
 
+// 加入购物车
+router.post('/addCart',(req,res,next) => {
+    var userId = '100077';
+    const productId = req.body.productId;
+    console.log('productId =' , productId)
+    var User = require('../models/user')
+    User.findOne({userId:userId},(err,doc) => {
+        if (err) {
+            res.json({status:1,msg:err.message});
+        } else {
+           if (doc) {
+            // let goodsItem = '';
+            Goods.findOne({productId:productId}, (err,doc) => {
+                if (err) {
+                    res.json({status:1,msg:err.message})
+                } else {
+                    if (doc) {
+                        doc.productNum = 1;
+                        doc.checked = 1;
+                        // 直接push，mongo会自动的+1
+                        User.cartList.push(doc)
+                        User.save((err2,doc2) => {
+                            if (err2) {
+                                res.json({status:1,msg:err.message})
+                            } else {
+                                res.json({status:0,msg:"",result:"suc"})
+                            }
+                        })
+                    }
+                }
+            });
+           }
+        }
+    })
+})
 module.exports = router;
