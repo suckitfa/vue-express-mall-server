@@ -9,6 +9,7 @@ var usersRouter = require('./routes/users');
 var goodsRouter = require('./routes/goods')
 var app = express();
 
+var blackList = require('./config/blackList')
 app.use(logger('dev'));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
@@ -17,16 +18,15 @@ app.use(express.static(path.join(__dirname, 'public')));
 app.use(cors())
 // 拦截用户是否登入
 app.use(function(req,res,next) {
-    console.log('originUrl = ',req.originUrl)
+    console.log('originUrl = ',req.originalUrl)
+    console.log('blackList = ',blackList);
     if (req.cookies.userId) {
         next();
     } else {
-        // 使用黑名单来控制访问权限
-        const blackList = ['/goods/addCart']
-        if (!blackList.includes(req.originalUrl)) {
-            next()
-        } else {
+        if (blackList.some(item => req.originalUrl.indexOf(item))) {
             res.json({status:1,msg:"用户未登入",result:""});
+        } else {
+            next();
         }
     }
 })
