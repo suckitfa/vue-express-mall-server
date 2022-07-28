@@ -8,7 +8,6 @@ router.post('/login', function(req, res, next) {
     userName:req.body.userName,
     userPwd:req.body.userPwd,
   }
-  console.log('parsm = ',param)
   User.findOne(param,(err,doc) => {
     if(err) {
       res.json({status:1,msg:err.message});
@@ -19,7 +18,6 @@ router.post('/login', function(req, res, next) {
           maxAge:1000 * 60 * 60
         });
         // req.session.user = doc;
-        // console.log(req.session)
         res.json({status:'0',msg:"",result:{
           userName:doc.userName
         }})
@@ -29,4 +27,12 @@ router.post('/login', function(req, res, next) {
   
 });
 
+// 登出接口
+router.post('/logout',(req,res,next) => {
+  res.cookie('userId',"",{
+    path:'/',
+    maxAge: -1
+  });
+  res.json({status:0,msg:"",result:""});
+});
 module.exports = router;
