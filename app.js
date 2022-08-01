@@ -18,8 +18,6 @@ app.use(express.static(path.join(__dirname, 'public')));
 app.use(cors())
 // 拦截用户是否登入
 app.use(function(req,res,next) {
-    console.log('originUrl = ',req.originalUrl)
-    console.log('blackList = ',blackList);
     if (req.cookies.userId) {
         next();
     } else {
