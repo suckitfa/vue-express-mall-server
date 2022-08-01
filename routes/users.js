@@ -35,4 +35,19 @@ router.post('/logout',(req,res,next) => {
   });
   res.json({status:0,msg:"",result:""});
 });
+
+// 购物车列表
+router.get('/cartList',(req,res,next) => {
+  const userId = req.cookies.userId;
+  console.log('userId = ',userId);
+  User.findOne({userId:userId},(err,doc) => {
+    if (err) {
+      res.json({status:1,msg:err.message,result:''});
+    } else {
+      if (doc) {
+        res.json({status:0,msg:'',result:doc.cartList});
+      }
+    }
+  })
+})
 module.exports = router;

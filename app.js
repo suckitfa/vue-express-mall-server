@@ -23,7 +23,9 @@ app.use(function(req,res,next) {
     if (req.cookies.userId) {
         next();
     } else {
-        if (blackList.some(item => req.originalUrl.indexOf(item))) {
+        // 从黑名单中去除项目, indexOf如果未命中，就返回-1,
+        //如果命中就返回命中的第一个下标
+        if (blackList.some(item => req.originalUrl.indexOf(item) > 0)) {
             res.json({status:1,msg:"用户未登入",result:""});
         } else {
             next();
