@@ -13,6 +13,7 @@ router.post('/login', function(req, res, next) {
       res.json({status:1,msg:err.message});
     } else {
       if (doc) {
+        console.log('doc = ',doc)
         res.cookie("userId",doc.userId,{
           path:"/",
           maxAge:1000 * 60 * 60

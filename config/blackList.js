@@ -1,5 +1,6 @@
 const blackList = [
-    '/goods/addCart'
+    '/goods/addCart',
+    '/users/cartList'
 ]
 
 
