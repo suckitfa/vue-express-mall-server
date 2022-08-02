@@ -12,16 +12,13 @@ router.post('/login', function(req, res, next) {
     if(err) {
       res.json({status:1,msg:err.message});
     } else {
+      console.log(doc)
       if (doc) {
-        console.log('doc = ',doc)
-        res.cookie("userId",doc.userId,{
-          path:"/",
-          maxAge:1000 * 60 * 60
-        });
-        // req.session.user = doc;
-        res.json({status:'0',msg:"",result:{
+          res.setHeader('Set-Cookie',[`userId=${doc.userId}`])
+          res.cookie("userId",doc.userId)
+          .json({status:'0',msg:"",result:{
           userName:doc.userName
-        }})
+        }});
       }
     }
   });
@@ -40,7 +37,7 @@ router.post('/logout',(req,res,next) => {
 // 购物车列表
 router.get('/cartList',(req,res,next) => {
   const userId = req.cookies.userId;
-  console.log('userId = ',userId);
+  console.log('userId = ',userId)
   User.findOne({userId:userId},(err,doc) => {
     if (err) {
       res.json({status:1,msg:err.message,result:''});
@@ -50,5 +47,26 @@ router.get('/cartList',(req,res,next) => {
       }
     }
   })
+})
+
+// 删除购物车内容
+router.post('/cartDel', (req,res,next) => {
+  const userId = req.cookies.userId,productId = req.body.productId;
+  // 删除User中的cartList，productId的子文档
+  User.update({
+    userId:userId
+  },{
+    $pull:{
+      'cartList':{
+        'productId':productId
+      }
+    }
+  },(err, doc) => {
+    if (err) {
+      res.json({status:'1',msg:err.message,result:''})
+    } else {
+      res.json({status:0,msg:"",result:''})
+    }
+  });
 })
 module.exports = router;
