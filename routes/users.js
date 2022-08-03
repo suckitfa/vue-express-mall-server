@@ -94,4 +94,17 @@ router.post('/editCheckAll',(req,res,next) => {
       }
     });
 });
+
+// 查询用户地址
+router.get('/addressList',(req,res,next) => {
+  const userId = req.cookies.userId;
+  console.log('userId = ',userId)
+  User.findOne({userId:userId},(err,doc) => {
+    if (err) {
+      res.json({status:1,msg:err.message,result:""})
+    } else {
+      res.json({status:0,msg:"",result:doc.addressList});
+    }
+  })
+})
 module.exports = router;
