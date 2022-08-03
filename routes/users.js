@@ -126,7 +126,7 @@ router.post('/setDefault',(req,res,next) => {
         });
         // 保存回去数据库
         doc.save((err1,doc1) => {
-          if (err) {
+          if (err1) {
             res.json({status:1,msg:err1.message,result:""});
           } else {
             res.json({status:0,msg:"",result:""})
