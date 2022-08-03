@@ -137,4 +137,29 @@ router.post('/setDefault',(req,res,next) => {
   }
 
 });
+
+// 删除地址
+router.post('/delAddress',(req,res,next) => {
+  const userId = req.cookies.userId, addressId = req.body.addressId;
+  User.findOne({userId},(err,doc) => {
+    if (err) {
+      res.json({status:1,msg:err.message,result:""});
+    } else {
+      const addressList = doc.addressList;
+      addressList.forEach((item,index)=> {
+        if (item.addressId === addressId) {
+          addressList.splice(index,1);
+        }
+      });
+      doc.save((err1,doc1) => {
+        if (err1) {
+          res.json({status:1,msg:err.message,result:""});
+        } else {
+          res.json({status:0,msg:"suc",result:""});
+        }
+      })
+    }
+  })
+  
+})
 module.exports = router;
