@@ -82,7 +82,7 @@ router.post('/editCheckAll',(req,res,next) => {
           doc.cartList.forEach((item) => {
             item.checked = checkAll;
           });
-          user.save((err1,doc1) => {
+          User.save((err1,doc1) => {
             if (err) {
               res.json({status:1,msg:err.message,result:""})
             } else {
