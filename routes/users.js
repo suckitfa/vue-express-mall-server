@@ -12,7 +12,6 @@ router.post('/login', function(req, res, next) {
     if(err) {
       res.json({status:1,msg:err.message});
     } else {
-      console.log(doc)
       if (doc) {
           res.setHeader('Set-Cookie',[`userId=${doc.userId}`])
           res.cookie("userId",doc.userId)
@@ -37,7 +36,6 @@ router.post('/logout',(req,res,next) => {
 // 购物车列表
 router.get('/cartList',(req,res,next) => {
   const userId = req.cookies.userId;
-  console.log('userId = ',userId)
   User.findOne({userId:userId},(err,doc) => {
     if (err) {
       res.json({status:1,msg:err.message,result:''});
@@ -98,7 +96,6 @@ router.post('/editCheckAll',(req,res,next) => {
 // 查询用户地址
 router.get('/addressList',(req,res,next) => {
   const userId = req.cookies.userId;
-  console.log('userId = ',userId)
   User.findOne({userId:userId},(err,doc) => {
     if (err) {
       res.json({status:1,msg:err.message,result:""})
@@ -107,4 +104,37 @@ router.get('/addressList',(req,res,next) => {
     }
   })
 })
+
+// 设置默认地址接口
+router.post('/setDefault',(req,res,next) => {
+  const userId = req.cookies.userId,
+    addressId = req.body.addressId;
+  if (!addressId) {
+    res.json({status:'1003',msg:"addressId is null",result:""})
+  } else {
+    User.findOne({userId},(err,doc) => {
+      if (err) {
+        res.json({status:1,msg:err.message,result:""});
+      } else {
+        const addressList = doc.addressList;
+        addressList.forEach(item => {
+          if (item.addressId === addressId) {
+            item.isDefault = true;
+          } else {
+            item.isDefault = false;
+          }
+        });
+        // 保存回去数据库
+        doc.save((err1,doc1) => {
+          if (err) {
+            res.json({status:1,msg:err1.message,result:""});
+          } else {
+            res.json({status:0,msg:"",result:""})
+          }
+        });
+      }
+    }); // user_findOne
+  }
+
+});
 module.exports = router;
