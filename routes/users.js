@@ -162,4 +162,43 @@ router.post('/delAddress',(req,res,next) => {
   })
   
 })
+
+router.post("/payMent", (req,res,next) => {
+  const userId = req.cookies.userId;
+  const {orderTotal,addressId} = req.body;
+  User.findOne({userId},(err,doc) => {
+    if (err) {
+      res.json({status:1,msg:err.message,result:""})
+    } else {
+      // 获取当前用户的地址信息
+      const address = doc.addressList.find(item => item.addressId === addressId);
+      // 获取用户购物车的购买商品
+      const goodsOnBill = doc.cartList.filter(item => item.checked === '1');
+      console.log(`账单上的 = ${goodsOnBill}`);
+      // 账单信息
+      const order = {
+        orderId:'',
+        orderTotal,
+        addressInfo:address,
+        goodsList:goodsOnBill,
+        orderStatus:'1',
+        createDate:'',
+      }
+      // 将账单信息存入数据库
+      doc.orderList.push(order);
+      doc.save((err1,doc1) => {
+        if (err1) res.json({status:1,msg:err.message,result:""})
+        else {
+          res.json({
+            status:0,
+            msg:"",
+            result:{
+            orderId:order.orderId,
+            orderTotal:order.orderTotal}
+          });
+        } 
+      });
+    }
+  })
+})
 module.exports = router;
