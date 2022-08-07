@@ -1,7 +1,7 @@
 var express = require('express');
 var router = express.Router();
 var User = require('../models/user')
-
+require('../util/util')
 /* GET users listing. */
 router.post('/login', function(req, res, next) {
   const param = {
@@ -174,10 +174,16 @@ router.post("/payMent", (req,res,next) => {
       const address = doc.addressList.find(item => item.addressId === addressId);
       // 获取用户购物车的购买商品
       const goodsOnBill = doc.cartList.filter(item => item.checked === '1');
-      console.log(`账单上的 = ${goodsOnBill}`);
+      // 订单ID生成
+      const platform = '622';
+      const r1 = Math.floor(Math.random() * 10) // 0 -9
+      const r2 = Math.floor(Math.random() * 10)
+      const sysDate = new Date().Format('yyyyMMddhhmmss');
+      const orderCreatedDate = new Date().Format('yyyy-MM-dd hh:mm:ss');
+      const orderId = platform + r1 + sysDate + r2;
       // 账单信息
       const order = {
-        orderId:'',
+        orderId,
         orderTotal,
         addressInfo:address,
         goodsList:goodsOnBill,
