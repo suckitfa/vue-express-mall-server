@@ -216,9 +216,17 @@ router.get('/orderDetail',(req,res,next) => {
       res.json({status:"1",result:"",msg:err.message});
     } else {
       const orderList = user.orderList;
-      // 根据订单ID,遍历当前的订单列表
-      const currentOrder = orderList.find(order => order.orderId === orderId);
-      res.json({result:{orderTotal:currentOrder.orderTotal},status:'0',msg:""});
+      if (orderList.length > 0) {
+        // 根据订单ID,遍历当前的订单列表
+        const currentOrder = orderList.find(order => order.orderId === orderId);
+        if (currentOrder) {
+          res.json({result:{orderTotal:currentOrder.orderTotal},status:'0',msg:""});
+        } else {
+          res.json({result:"",status:'120001',msg:"无此订单"});
+        }
+      } else {
+        res.json({result:"",status:'120001',msg:"无此订单"});
+      }
     }
   });
 })
