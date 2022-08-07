@@ -196,7 +196,7 @@ router.post("/payMent", (req,res,next) => {
         if (err1) res.json({status:1,msg:err.message,result:""})
         else {
           res.json({
-            status:0,
+            status:'0',
             msg:"",
             result:{
             orderId:order.orderId,
