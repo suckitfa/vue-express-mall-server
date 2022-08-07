@@ -24,6 +24,16 @@ var userSchema = new mongoose.Schema({
             "tel": String,
             "isDefault": Boolean
         }
-    ]
+    ],
+    // "orderList":[
+    //     {
+    //        "orderId":String,
+    //        "orderTotal":Number,
+    //        "addressInfo":String,
+    //        "goodsList":Array,
+    //        orderStatus:String,
+    //        "createDate":String
+    //     }
+    // ]
 });
 module.exports = mongoose.model('User',userSchema);

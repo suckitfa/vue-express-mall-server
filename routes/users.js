@@ -207,4 +207,19 @@ router.post("/payMent", (req,res,next) => {
     }
   })
 })
+
+router.get('/orderDetail',(req,res,next) => {
+  const userId = req.cookies.userId,
+    orderId = req.param('orderId');
+  User.findOne({userId},(err,user) => {
+    if (err) {
+      res.json({status:"1",result:"",msg:err.message});
+    } else {
+      const orderList = user.orderList;
+      // 根据订单ID,遍历当前的订单列表
+      const currentOrder = orderList.find(order => order.orderId === orderId);
+      res.json({result:{orderTotal:currentOrder.orderTotal},status:'0',msg:""});
+    }
+  });
+})
 module.exports = router;
