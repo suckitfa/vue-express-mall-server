@@ -229,5 +229,20 @@ router.get('/orderDetail',(req,res,next) => {
       }
     }
   });
+});
+
+router.get('/getCartCount',(req,res,next) => {
+  if (req.cookies && req.cookies.userId) {
+    const userId = req.cookies.userId;
+    User.findOne({userId},(err,doc) => {
+      if (err) {
+        res.json({status:'1',msg:err.message,result:""})
+      } else {
+        const cartList = doc.cartList;
+        const cartCount = cartList.reduce((pre,cur) => pre + parseInt(cur.productNum),0);
+        res.json({status:'0',cartCount,msg:""})
+      }
+    })
+  }
 })
 module.exports = router;
